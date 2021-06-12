@@ -12,7 +12,7 @@ from flask import render_template
 @app.route("/data_to")
 def data_to():
 #создаем переменные с данными для передачи в шаблон
-  some_pars = {'user':'Ivan','color':'red'}
+  some_pars = {'user':'BrazenWitch','color':'blue'}
   some_str = 'Hello my dear friends!'
   some_value = 10
   #передаем данные в шаблон и вызываем его
