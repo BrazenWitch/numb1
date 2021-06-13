@@ -82,9 +82,12 @@ def net():
       neurodic[elem[0][1]] = elem[0][2]
     # сохраняем загруженный файл
     form.upload.data.save(filename)
+  SECRET_KEY = 'secret'
+  app.config['SECRET_KEY'] = SECRET_KEY
   # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
   # сети если был нажат сабмит, либо передадим falsy значения
   return render_template('net.html',form=form,image_name=filename,neurodic=neurodic)
 
 '''def net():
   wtf.quick_form(form, method='post',enctype="multipart/form-data", action="net")'''
+
