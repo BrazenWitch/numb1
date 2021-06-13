@@ -1,23 +1,5 @@
 from flask import Flask
-app = Flask(__name__)
-#декоратор для вывода страницы по умолчанию
-@app.route("/")
-def hello():
-  return " <html><head></head> <body> Hello World! </body></html>"
-if __name__ == "__main__":
-  app.run(host='127.0.0.1',port=5000)
-  
 from flask import render_template
-#наша новая функция сайта
-@app.route("/data_to")
-def data_to():
-#создаем переменные с данными для передачи в шаблон
-  some_pars = {'user':'BrazenWitch','color':'blue'}
-  some_str = 'Hello my dear friends!'
-  some_value = 10
-  #передаем данные в шаблон и вызываем его
-  return render_template('simple.html',some_str = some_str,
-  some_value = some_value,some_pars=some_pars)
 
 # модули работы с формами и полями в формах
 from flask_wtf import FlaskForm,RecaptchaField
@@ -60,6 +42,27 @@ import os
 # подключаем наш модуль и переименовываем
 # для исключения конфликта имен
 import net as neuronet
+
+app = Flask(__name__)
+#декоратор для вывода страницы по умолчанию
+@app.route("/")
+def hello():
+  return " <html><head></head> <body> Hello World! </body></html>"
+if __name__ == "__main__":
+  app.run(host='127.0.0.1',port=5000)
+  
+#наша новая функция сайта
+@app.route("/data_to")
+def data_to():
+#создаем переменные с данными для передачи в шаблон
+  some_pars = {'user':'BrazenWitch','color':'blue'}
+  some_str = 'Hello my dear friends!'
+  some_value = 10
+  #передаем данные в шаблон и вызываем его
+  return render_template('simple.html',some_str = some_str,
+  some_value = some_value,some_pars=some_pars)
+
+
 # метод обработки запроса GET и POST от клиента
 @app.route("/net",methods=['GET', 'POST'])
 def net():
