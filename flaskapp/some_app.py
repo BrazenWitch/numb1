@@ -63,6 +63,7 @@ import net as neuronet
 # метод обработки запроса GET и POST от клиента
 @app.route("/net",methods=['GET', 'POST'])
 def net():
+  bootstrap = Bootstrap(app)
   # создаем объект формы
   form = NetForm()
   # обнуляем переменные передаваемые в форму
