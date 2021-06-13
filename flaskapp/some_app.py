@@ -18,3 +18,6 @@ def data_to():
   #передаем данные в шаблон и вызываем его
   return render_template('simple.html',some_str = some_str,
   some_value = some_value,some_pars=some_pars)
+
+def net():
+  wtf.quick_form(form, method='post',enctype="multipart/form-data", action="net")
