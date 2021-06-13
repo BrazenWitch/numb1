@@ -1,6 +1,7 @@
 from flask import Flask
 from flask import render_template
 
+app = Flask(__name__)
 # модули работы с формами и полями в формах
 from flask_wtf import FlaskForm,RecaptchaField
 from wtforms import StringField, SubmitField, TextAreaField
@@ -43,7 +44,6 @@ import os
 # для исключения конфликта имен
 import net as neuronet
 
-app = Flask(__name__)
 #декоратор для вывода страницы по умолчанию
 @app.route("/")
 def hello():
