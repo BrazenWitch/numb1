@@ -10,7 +10,7 @@ import os
 # модуль работы с изображениями
 from PIL import Image
 import numpy as np
-# для конфигурации gpu
+'''# для конфигурации gpu
 #from tensorflow.compat.v1 import ConfigProto
 #from tensorflow.compat.v1 import InteractiveSession
 # настраиваем работу с GPU, для CPU эта часть не нужна
@@ -57,4 +57,4 @@ def getresult(image_box):
 # из-за инициализации библиотек
 # возможно, лучше убрать и закомментировать эти строки
 fcount, fimage = read_image_files(1,'./static')
-decode = getresult(fimage)
+decode = getresult(fimage)'''
