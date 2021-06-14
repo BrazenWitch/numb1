@@ -131,6 +131,9 @@ def net():
     filename=None
     newfilename=None
     grname=None
+    oldimgname=None
+    vertgr_name=None
+    horizgr_name=None
     # проверяем нажатие сабмит и валидацию введенных данных
     if form.validate_on_submit():
     # файлы с изображениями читаются из каталога static
