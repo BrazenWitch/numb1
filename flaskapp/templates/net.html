@@ -6,22 +6,49 @@
 {% block content %}
 {{ wtf.quick_form(form, method='post',enctype=None, action="net") }}
 <!-- один из стандартных тэгов html - заголовок второго уровня -->
-<h2>grafik: </h2>
-<!-- проверяем есть ли данные классификации -->
-{% if gr_name %}
-  <p>{{gr_name}}
-  <p><img src={{gr_name}}/>
+<h2> Images:</h2>
+<table align="center">
+<tr width=800px><td width=300px>
+{% if old_img %}
+<p>Original image: {{old_img}}</p>
+<p><img src={{old_img}}/>
 {% else %}
-  <p> There is no image yet </p>
+<p> There is no image yet </p>
 {% endif %}
-
-<h2>Image is here: </h2>
-<!-- отображаем загруженное изображение с закругленными углами -->
-<!-- если оно есть (после submit) -->
+</td><td width=300px>
 {% if image_name %}
-  <p>{{image_name}}
-  <p><img src={{image_name}}/>
+<p>New image: {{image_name}}
+<p><img src={{image_name}}></p>
 {% else %}
-  <p> There is no image yet </p>
+<p> There is no image yet </p>
+{% endif %}</td></tr></table>
+<h2>Graphs: </h2>
+<!-- проверяем есть ли данные классификации -->
+<table align="center">
+<tr width=700px><td width=300px>
+{% if vertgr %}
+<p>Color average vert: {{vertgr}}
+<p><img src={{vertgr}}></p>
+{% else %}
+<p> There is no image yet </p>
+{% endif %}
+</td><td width=300px>
+{% if horizgr %}
+<p>Color average horiz: {{horizgr}}
+<p><img src={{horizgr}}/>
+{% else %}
+<p> There is no image yet </p>
+{% endif %}
+</td>
+<tr width=700px><td>
+<br><br>
+{% if gr_name %}
+<p>Color map: {{gr_name}}
+<p><img src={{gr_name}}/>
+{% else %}
+<p> There is no image yet </p>
 {% endif %}
 {% endblock %}
+</td>
+</tr>
+</table>
