@@ -37,7 +37,7 @@ class NetForm(FlaskForm):
     FileRequired(),
     FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
     # поле формы с capture
-    #recaptcha = RecaptchaField()
+    recaptcha = RecaptchaField()
     #кнопка submit, для пользователя отображена как send
     submit = SubmitField('send')
     # функция обработки запросов на адрес 127.0.0.1:5000/net
