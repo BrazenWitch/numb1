@@ -12,6 +12,7 @@ from flask_wtf import FlaskForm,RecaptchaField
 from wtforms import StringField, SubmitField, TextAreaField
 # модули валидации полей формы
 from wtforms.validators import DataRequired
+from wtforms.validators import AnyOf
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 # используем csrf токен, можете генерировать его сами
 SECRET_KEY = 'secret'
@@ -30,14 +31,17 @@ class NetForm(FlaskForm):
 # валидатор проверяет введение данных после нажатия кнопки submit
 # и указывает пользователю ввести данные если они не введены
 # или неверны
-    size = StringField('size', validators = [DataRequired()])
+  #  size = StringField('size', validators = [DataRequired()])
     # поле загрузки файла
     # здесь валидатор укажет ввести правильные файлы
     upload = FileField('Load image', validators=[
     FileRequired(),
     FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
     # поле формы с capture
-    recaptcha = RecaptchaField()
+    #recaptcha = RecaptchaField()
+    red = StringField('First color', validators=[DataRequired(), AnyOf(['red', 'green', 'blue'], 'red green blue only!')])
+    green = StringField('Second color', validators=[DataRequired(), AnyOf(['red', 'green', 'blue'], 'red green blue only!')])
+    blue = StringField('Third color', validators=[DataRequired(), AnyOf(['red', 'green', 'blue'], 'red green blue only!')])
     #кнопка submit, для пользователя отображена как send
     submit = SubmitField('send')
     # функция обработки запросов на адрес 127.0.0.1:5000/net
@@ -50,45 +54,80 @@ from PIL import Image
 import matplotlib.pyplot as plt
 import seaborn as sns
 ## функция для оброботки изображения
-def draw(filename,size):
+def draw(filename,red,green,blue):
 ##открываем изображение
     print(filename)
     img= Image.open(filename)
-    ##делаем график
-    fig = plt.figure(figsize=(6, 4))
-    ax = fig.add_subplot()
-    data = np.random.randint(0, 255, (100, 100))
-    ax.imshow(img, cmap='plasma')
-    b = ax.pcolormesh(data, edgecolors='black', cmap='plasma')
-    fig.colorbar(b, ax=ax)
-    gr_path = "./static/newgr.png"
-    sns.displot(data)
-    #plt.show()
-    plt.savefig(gr_path)
-    plt.close()
-    ##рисуем рамки
-    size=int(size)
     height = 224
     width = 224
     img= np.array(img.resize((height,width)))/255.0
-    print(size)
-    img[:size,:,1] = 0
-    img[:,0:size,1] = 0
-    img[:,224-size:,1] = 0
-    img[224-size:,:,1] = 0
+    ##делаем график
+    from skimage import io
+    _ = plt.hist(img.ravel(), bins = 256, color = 'orange', )
+    _ = plt.hist(img[:, :, 0].ravel(), bins = 256, color = 'Red', alpha = 0.5)
+    _ = plt.hist(img[:, :, 1].ravel(), bins = 256, color = 'Green', alpha = 0.5)
+    _ = plt.hist(img[:, :, 2].ravel(), bins = 256, color = 'Blue', alpha = 0.5)
+    _ = plt.xlabel('Intensity Value')
+    _ = plt.ylabel('Count')
+    _ = plt.legend(['Total', 'Red_Channel', 'Green_Channel', 'Blue_Channel'])
+
+    plt_img2=np.zeros((224,20,3))
+    plt_img2[:,0,:]=(np.average(img,(0))).astype(np.float)
+    for i in range (1,19):
+        plt_img2[:,i,:]=plt_img2[:,0,:]
+    plt_img2 = Image.fromarray((plt_img2 * 255).astype(np.uint8))
+
+    plt_img=np.zeros((20,224,3))
+    plt_img[0,:,:]=(np.average(img,(1))).astype(np.float)
+    for i in range (1,19):
+        plt_img[i,:,:]=plt_img[0,:,:]
+    plt_img = Image.fromarray((plt_img * 255).astype(np.uint8))
+
+    gr_path = "./static/newgr.png"
+    plt.savefig(gr_path)
+    plt.close()
+    gr_path_horiz = "./static/horizgr.png"
+    plt_img.save(gr_path_horiz)
+    gr_path_vert = "./static/vertgr.png"
+    plt_img2.save(gr_path_vert)
+
+    result_img=np.zeros((224,224,3))
+    if red == 'red':
+        result_img[:,:,0] = img[:,:,0]
+    if red == 'green':
+        result_img[:,:,0] = img[:,:,1]
+    if red == 'blue':
+        result_img[:,:,0] = img[:,:,2]
+
+    if green == 'red':
+        result_img[:,:,1] = img[:,:,0]
+    if green == 'green':
+        result_img[:,:,1] = img[:,:,1]
+    if green == 'blue':
+        result_img[:,:,1] = img[:,:,2]
+
+    if blue == 'red':
+        result_img[:,:,2] = img[:,:,0]
+    if blue == 'green':
+        result_img[:,:,2] = img[:,:,1]
+    if blue == 'blue':
+        result_img[:,:,2] = img[:,:,2]
     ##сохраняем новое изображение
-    img = Image.fromarray((img * 255).astype(np.uint8))
-    print(img)
+    result_img = Image.fromarray((result_img * 255).astype(np.uint8))
+    #print(result_img)
     #img = Image.fromarray(img)
     new_path = "./static/new.png"
-    print(img)
-    img.save(new_path)
-    return new_path, gr_path
+    img = Image.fromarray((img * 255).astype(np.uint8))
+    old_path = "./static/old.png"
+    img.save(old_path)
+    #print(result_img)
+    result_img.save(new_path)
+    return new_path, gr_path, old_path, gr_path_vert, gr_path_horiz
     # метод обработки запроса GET и POST от клиента
 @app.route("/net",methods=['GET', 'POST'])
 def net():
     # создаем объект формы
-    form = NetForm()
+    form = NetForm(meta={'csrf': False})
     # обнуляем переменные передаваемые в форму
     filename=None
     newfilename=None
@@ -97,9 +136,12 @@ def net():
     if form.validate_on_submit():
     # файлы с изображениями читаются из каталога static
         filename = os.path.join('./static', secure_filename(form.upload.data.filename))
-        sz=form.size.data
+      #  sz=form.size.data
+        red=form.red.data
+        green=form.green.data
+        blue=form.blue.data
         form.upload.data.save(filename)
-        newfilename, grname = draw(filename,sz)
-    return render_template('net.html',form=form,image_name=newfilename,gr_name=grname)
+        newfilename, grname, oldimgname, vertgr_name, horizgr_name = draw(filename,red,green,blue)
+    return render_template('net.html',form=form,image_name=newfilename,gr_name=grname,old_img=oldimgname,vertgr=vertgr_name,horizgr=horizgr_name)
 if __name__ == "__main__":
     app.run(host='127.0.0.1',port=5000)
