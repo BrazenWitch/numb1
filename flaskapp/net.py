@@ -23,7 +23,7 @@ images_resized = np.array(image.resize(height,width))/255.0
 images_resized = np.array(images_resized)'''
 image1 = np.array(image)
 
-fig_ = plt.figure(figsize=(1,1))
+fig_ = plt.figure(figsize=(15,15))
 viewer = fig_.add_subplot(1,1,1)
 
 image_ = image1.copy()
