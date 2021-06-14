@@ -5,3 +5,4 @@ Flask-Bootstrap==3.3.7.1
 Flask-WTF==0.14.3
 Pillow==6.2.2
 lxml==4.3.3
+seaborn==0.11.1
