@@ -27,6 +27,6 @@ fig_ = plt.figure(figsize=(1,1))
 viewer = fig_.add_subplot(1,1,1)
 
 image_ = image1.copy()
-viewer.imshow(red_image(image_))
+viewer.imshow(image1)
 
 plt.show()
