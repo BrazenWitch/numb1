@@ -4,7 +4,7 @@
 {% block title %}This is an page{% endblock %}
 <!-- блок body -->
 {% block content %}
-{{ wtf.quick_form(form, method='post',enctype="multipart/formdata", action="net") }}
+{{ wtf.quick_form(form, method='post',enctype=None, action="net") }}
 <!-- один из стандартных тэгов html - заголовок второго уровня -->
 <h2>grafik: </h2>
 <!-- проверяем есть ли данные классификации -->
