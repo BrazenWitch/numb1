@@ -31,14 +31,13 @@ class NetForm(FlaskForm):
 # валидатор проверяет введение данных после нажатия кнопки submit
 # и указывает пользователю ввести данные если они не введены
 # или неверны
-  #  size = StringField('size', validators = [DataRequired()])
     # поле загрузки файла
     # здесь валидатор укажет ввести правильные файлы
     upload = FileField('Load image', validators=[
     FileRequired(),
     FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
     # поле формы с capture
-    #recaptcha = RecaptchaField()
+    recaptcha = RecaptchaField()
     red = StringField('First color', validators=[DataRequired(), AnyOf(['red', 'green', 'blue'], 'red green blue only!')])
     green = StringField('Second color', validators=[DataRequired(), AnyOf(['red', 'green', 'blue'], 'red green blue only!')])
     blue = StringField('Third color', validators=[DataRequired(), AnyOf(['red', 'green', 'blue'], 'red green blue only!')])
